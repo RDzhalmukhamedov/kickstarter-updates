@@ -1,0 +1,33 @@
+{
+    "title": "Actor input schema",
+    "description": "This is actor input schema",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "projectsToCrawl": {
+            "title": "Projects to crawl",
+            "type": "array",
+            "description": "List of projects to crawl updates",
+            "editor": "requestListSources"
+        },
+        "maxRequestRetries": {
+            "title": "Max request retries",
+            "type": "integer",
+            "description": "Max number of request retries",
+            "default": 5,
+            "editor": "number",
+            "prefill": 5,
+            "maximum": 20,
+            "minimum": 3,
+            "nullable": true
+        },
+        "proxyUrls": {
+            "title": "Proxy URLs",
+            "type": "array",
+            "description": "List of proxy URLs",
+            "editor": "stringList",
+            "nullable": true
+        }
+    },
+    "required": ["projectsToCrawl"]
+}

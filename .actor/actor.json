@@ -1,0 +1,12 @@
+{
+    "actorSpecification": 1,
+    "name": "kickstarter-updates",
+    "title": "Kickstarter updates crawler",
+    "description": "This is an Apify actor to crawl new updates of kickstarter projects.",
+    "version": "1.2",
+    "meta": {
+        "templateId": "ts-crawlee-cheerio"
+    },
+    "input": "./input_schema.json",
+    "dockerfile": "./Dockerfile"
+}
