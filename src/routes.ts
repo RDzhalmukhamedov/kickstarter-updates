@@ -34,14 +34,14 @@ async function kickstarterHandler({ $, request, log, crawler }: CheerioCrawlingC
     );
 
     // 1. Check if project not tracked yet or has new posts/updates
-    if (crawledUpdate.status == ProjectStatus.NotTracked || crawledUpdate.updatesCount < updatesCount) {
+    if (crawledUpdate.Status == ProjectStatus.NotTracked || crawledUpdate.UpdatesCount < updatesCount) {
         // 2. Updating previous values to current and getting new values from project page
-        crawledUpdate.prevUpdatesCount = crawledUpdate.updatesCount;
-        crawledUpdate.updatesCount = updatesCount;
-        crawledUpdate.projectName =
+        crawledUpdate.PrevUpdatesCount = crawledUpdate.UpdatesCount;
+        crawledUpdate.UpdatesCount = updatesCount;
+        crawledUpdate.ProjectName =
             $(CrawlSelectors.Ks.ProjectName.Element).attr(CrawlSelectors.Ks.ProjectName.Attr) ?? 'Unknown';
-        crawledUpdate.prevStatus = crawledUpdate.status;
-        crawledUpdate.status = Helpers.parseStatusFromKs(
+        crawledUpdate.PrevStatus = crawledUpdate.Status;
+        crawledUpdate.Status = Helpers.parseStatusFromKs(
             $(CrawlSelectors.Ks.Status.Element).attr(CrawlSelectors.Ks.Status.Attr),
         );
 
@@ -79,9 +79,9 @@ async function kickstarterAtomHandler({ request, log, body }: CheerioCrawlingCon
     if (!!updateLink) {
         // 4. Getting last update title and fill project info
         const lastUpdateTitle: string = xmlData.feed.entry[0].title[0];
-        crawledUpdate.link = updateLink;
-        crawledUpdate.lastUpdateId = Number.parseInt(updateLink.split('/').pop()!);
-        crawledUpdate.lastUpdateTitle = lastUpdateTitle;
+        crawledUpdate.Link = updateLink;
+        crawledUpdate.LastUpdateId = Number.parseInt(updateLink.split('/').pop()!);
+        crawledUpdate.LastUpdateTitle = lastUpdateTitle;
     } else {
         log.info('There are no available links in feed', { url: request.loadedUrl });
     }
