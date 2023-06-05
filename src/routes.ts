@@ -8,22 +8,9 @@ import { ProjectStatus } from './utils/project-status.enum.js';
 
 export const router = createCheerioRouter();
 
-router.addDefaultHandler(proxyHandler);
+router.addDefaultHandler(kickstarterHandler);
 router.addHandler('ks', kickstarterHandler);
 router.addHandler('atom', kickstarterAtomHandler);
-
-async function proxyHandler({ log, sendRequest }: CheerioCrawlingContext): Promise<void> {
-    log.info('Started crawl for list of proxies link');
-    const res = await sendRequest();
-    const ips = res.body.match(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\:\d{1,4}\b/g);
-    if (!!ips) {
-        for (const ip of ips) {
-            await Actor.pushData({ url: `http://${ip}` });
-        }
-    } else {
-        log.info('No proxy links found');
-    }
-}
 
 async function kickstarterHandler({ $, request, log, crawler }: CheerioCrawlingContext): Promise<void> {
     log.info('Started crawl for kickstarter link', { url: request.loadedUrl });

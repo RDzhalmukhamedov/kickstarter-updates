@@ -22,24 +22,12 @@ if (!!input) {
         log.info(`Got ${proxyUrls?.length ?? 0} proxy URLs from input`);
 
         let proxyConfiguration: ProxyConfiguration | undefined;
-        if (!proxyUrls || proxyUrls.length == 0) {
-            const dataset = await Actor.openDataset();
-            const proxyCrawler = new CheerioCrawler({
-                requestHandler: router,
-                maxRequestRetries: maxRequestRetries,
+        if (!!proxyUrls && proxyUrls.length > 0) {
+            proxyConfiguration = await Actor.createProxyConfiguration({
+                useApifyProxy: false,
+                proxyUrls: proxyUrls,
             });
-            await proxyCrawler.run(['https://openproxy.space/list/http']);
-
-            if ((await dataset.getData()).items.length > 0) {
-                proxyUrls = await dataset.map<string>((value) => value.url);
-                log.info(`Crawled ${proxyUrls.length} proxy URLs`);
-            }
-            await dataset.drop();
         }
-        proxyConfiguration = await Actor.createProxyConfiguration({
-            useApifyProxy: false,
-            proxyUrls: proxyUrls,
-        });
 
         requestQueue.addRequests(projectsToCrawl);
         // 6. Initialize crawler
