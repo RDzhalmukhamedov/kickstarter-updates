@@ -14,18 +14,11 @@
             "title": "Max request retries",
             "type": "integer",
             "description": "Max number of request retries",
-            "default": 5,
+            "default": 10,
             "editor": "number",
-            "prefill": 5,
+            "prefill": 10,
             "maximum": 20,
             "minimum": 3,
-            "nullable": true
-        },
-        "proxyUrls": {
-            "title": "Proxy URLs",
-            "type": "array",
-            "description": "List of proxy URLs",
-            "editor": "stringList",
             "nullable": true
         }
     },

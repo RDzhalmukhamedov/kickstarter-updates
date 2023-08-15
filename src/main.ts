@@ -1,4 +1,4 @@
-import { Actor, ProxyConfiguration, log } from 'apify';
+import { Actor, log } from 'apify';
 import { CheerioCrawler, Dictionary, RequestOptions } from 'crawlee';
 import { router } from './routes.js';
 
@@ -7,7 +7,7 @@ await Actor.init();
 // 2. Get input
 const input: Dictionary | null = await Actor.getInput();
 
-// 3. Adding to queue main ks page to get cookies
+// 3. Initializing of request queue
 const requestQueue = await Actor.openRequestQueue();
 
 // 4. Сheck correctness of input
@@ -15,22 +15,10 @@ if (!!input) {
     const projectsToCrawl: RequestOptions[] = input['projectsToCrawl'];
 
     if (!!projectsToCrawl) {
-        const maxRequestRetries: number = input['maxRequestRetries'] ?? 5;
-
-        // 5. Getting proxy URLs and initialize proxy settings
-        let proxyUrls: string[] = input['proxyUrls'];
-        log.info(`Got ${proxyUrls?.length ?? 0} proxy URLs from input`);
-
-        let proxyConfiguration: ProxyConfiguration | undefined;
-        if (!!proxyUrls && proxyUrls.length > 0) {
-            proxyConfiguration = await Actor.createProxyConfiguration({
-                useApifyProxy: false,
-                proxyUrls: proxyUrls,
-            });
-        }
+        const maxRequestRetries: number = input['maxRequestRetries'] ?? 10;
 
         requestQueue.addRequests(projectsToCrawl);
-        // 6. Initialize crawler
+        // 5. Initialize crawler
         const crawler = new CheerioCrawler({
             additionalMimeTypes: ['application/atom+xml'],
             requestQueue: requestQueue,
@@ -50,7 +38,7 @@ if (!!input) {
                 },
             ],
         });
-        // 7. Start crawl
+        // 6. Start crawl
         await crawler.run();
     } else {
         log.info('Incorrect input format. Actor will be stopped.');
