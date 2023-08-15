@@ -3,5 +3,6 @@ export enum ProjectStatus {
     Live = 1,
     Funded = 2,
     Completed = 3,
+    Draft = 4,
     Canceled = -1,
 }

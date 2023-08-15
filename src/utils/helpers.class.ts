@@ -13,6 +13,8 @@ export class Helpers {
                 return ProjectStatus.Completed;
             case 'canceled':
                 return ProjectStatus.Canceled;
+            case 'submitted':
+                return ProjectStatus.Draft;
             default:
                 return ProjectStatus.NotTracked;
         }
