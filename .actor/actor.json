@@ -3,7 +3,7 @@
     "name": "kickstarter-updates",
     "title": "Kickstarter updates crawler",
     "description": "This is an Apify actor to crawl new updates of kickstarter projects.",
-    "version": "1.3",
+    "version": "1.4",
     "meta": {
         "templateId": "ts-crawlee-cheerio"
     },
