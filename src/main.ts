@@ -38,7 +38,17 @@ if (!!input) {
             maxRequestRetries: maxRequestRetries,
             maxConcurrency: 1,
             useSessionPool: true,
-            proxyConfiguration: proxyConfiguration,
+            sessionPoolOptions: {
+                maxPoolSize: 1,
+            },
+            preNavigationHooks: [
+                async (crawlingContext) => {
+                    if (!!crawlingContext.session) {
+                        const { request } = crawlingContext;
+                        request.headers = { 'x-csrf-token': crawlingContext.session.userData.csrf };
+                    }
+                },
+            ],
         });
         // 7. Start crawl
         await crawler.run();

@@ -12,17 +12,32 @@ router.addDefaultHandler(kickstarterHandler);
 router.addHandler('ks', kickstarterHandler);
 router.addHandler('atom', kickstarterAtomHandler);
 
-async function kickstarterHandler({ $, request, log, crawler }: CheerioCrawlingContext): Promise<void> {
+async function kickstarterHandler({
+    $,
+    request,
+    log,
+    crawler,
+    response,
+    session,
+}: CheerioCrawlingContext): Promise<void> {
     log.info('Started crawl for kickstarter link', { url: request.loadedUrl });
+
+    // 1. Set cookies and csrf token to prevent blocking
+    if (!!session) {
+        session.setCookiesFromResponse(response);
+        session.userData = {
+            csrf: $(CrawlSelectors.Ks.CsrfToken.Selector).attr(CrawlSelectors.Ks.CsrfToken.Attr),
+        };
+    }
 
     const crawledUpdate: ProjectInfo = request.userData.project;
     const updatesCount = Number.parseInt(
         $(CrawlSelectors.Ks.UpdatesCount.Element).attr(CrawlSelectors.Ks.UpdatesCount.Attr) ?? '0',
     );
 
-    // 1. Check if project not tracked yet or has new posts/updates
+    // 2. Check if project not tracked yet or has new posts/updates
     if (crawledUpdate.Status == ProjectStatus.NotTracked || crawledUpdate.UpdatesCount < updatesCount) {
-        // 2. Updating previous values to current and getting new values from project page
+        // 3. Updating previous values to current and getting new values from project page
         crawledUpdate.PrevUpdatesCount = crawledUpdate.UpdatesCount;
         crawledUpdate.UpdatesCount = updatesCount;
         crawledUpdate.ProjectName =
@@ -32,13 +47,13 @@ async function kickstarterHandler({ $, request, log, crawler }: CheerioCrawlingC
             $(CrawlSelectors.Ks.Status.Element).attr(CrawlSelectors.Ks.Status.Attr),
         );
 
-        // 3. If there are no updates in the project, we can't get a link to the latest update, so leave it as-is
+        // 4. If there are no updates in the project, we can't get a link to the latest update, so leave it as-is
         if (updatesCount == 0) {
             await Actor.pushData(crawledUpdate);
             return;
         }
 
-        // 4. Trying to crawl last update link and title from atom feed
+        // 5. Trying to crawl last update link and title from atom feed
         const atomLink = $(CrawlSelectors.Ks.AtomLink.Element).attr(CrawlSelectors.Ks.AtomLink.Attr);
         if (!!atomLink) {
             await crawler.addRequests([

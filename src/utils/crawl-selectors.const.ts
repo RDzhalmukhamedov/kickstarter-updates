@@ -1,5 +1,9 @@
 export const CrawlSelectors = {
     Ks: {
+        CsrfToken: {
+            Selector: 'meta[name="csrf-token"]',
+            Attr: 'content',
+        },
         UpdatesCount: {
             Element: '#updates-emoji',
             Attr: 'emoji-data',
