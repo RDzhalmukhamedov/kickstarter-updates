@@ -32,7 +32,7 @@ async function kickstarterHandler({
 
     const crawledUpdate: ProjectInfo = request.userData.project;
     const updatesCount = Number.parseInt(
-        $(CrawlSelectors.Ks.UpdatesCount.Element).attr(CrawlSelectors.Ks.UpdatesCount.Attr) ?? '0',
+        $(CrawlSelectors.Ks.UpdatesCount.Selector).attr(CrawlSelectors.Ks.UpdatesCount.Attr) ?? '0',
     );
 
     // 2. Check if project not tracked yet or has new posts/updates
@@ -41,10 +41,10 @@ async function kickstarterHandler({
         crawledUpdate.PrevUpdatesCount = crawledUpdate.UpdatesCount;
         crawledUpdate.UpdatesCount = updatesCount;
         crawledUpdate.ProjectName =
-            $(CrawlSelectors.Ks.ProjectName.Element).attr(CrawlSelectors.Ks.ProjectName.Attr) ?? 'Unknown';
+            $(CrawlSelectors.Ks.ProjectName.Selector).attr(CrawlSelectors.Ks.ProjectName.Attr) ?? 'Unknown';
         crawledUpdate.PrevStatus = crawledUpdate.Status;
         crawledUpdate.Status = Helpers.parseStatusFromKs(
-            $(CrawlSelectors.Ks.Status.Element).attr(CrawlSelectors.Ks.Status.Attr),
+            $(CrawlSelectors.Ks.Status.Selector).attr(CrawlSelectors.Ks.Status.Attr),
         );
 
         // 4. If there are no updates in the project, we can't get a link to the latest update, so leave it as-is
@@ -54,7 +54,7 @@ async function kickstarterHandler({
         }
 
         // 5. Trying to crawl last update link and title from atom feed
-        const atomLink = $(CrawlSelectors.Ks.AtomLink.Element).attr(CrawlSelectors.Ks.AtomLink.Attr);
+        const atomLink = $(CrawlSelectors.Ks.AtomLink.Selector).attr(CrawlSelectors.Ks.AtomLink.Attr);
         if (!!atomLink) {
             await crawler.addRequests([
                 {

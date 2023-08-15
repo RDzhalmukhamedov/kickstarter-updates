@@ -5,23 +5,23 @@ export const CrawlSelectors = {
             Attr: 'content',
         },
         UpdatesCount: {
-            Element: '#updates-emoji',
+            Selector: '#updates-emoji',
             Attr: 'emoji-data',
         },
         ProjectName: {
-            Element: 'meta[property="og:title"]',
+            Selector: 'meta[property="og:title"]',
             Attr: 'content',
         },
         Status: {
-            Element: 'section.js-project-description-content',
+            Selector: 'section.js-project-description-content',
             Attr: 'data-project-state',
         },
         LastUpdateLink: {
-            Element: 'a#last-updated-post-link',
+            Selector: 'a#last-updated-post-link',
             Attr: 'href',
         },
         AtomLink: {
-            Element: 'link[type="application/atom+xml"]',
+            Selector: 'link[type="application/atom+xml"]',
             Attr: 'href',
         },
     },
