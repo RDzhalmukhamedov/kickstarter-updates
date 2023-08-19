@@ -9,7 +9,7 @@ import { ProjectStatus } from './utils/project-status.enum.js';
 export const router = createCheerioRouter();
 
 router.addDefaultHandler(kickstarterHandler);
-router.addHandler('ks', kickstarterHandler);
+router.addHandler('kickstarter', kickstarterHandler);
 router.addHandler('atom', kickstarterAtomHandler);
 
 async function kickstarterHandler({
